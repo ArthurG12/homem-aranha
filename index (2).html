@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Homem aranha, tudo eu nessa casa</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--ink:#16233b;--mut:#6b7794;--line:#e5e9f2;--navy:#1b2d4a;--acc:#2f6bff;--ok:#19c37d;--okbg:#eafaf2;--warn:#f59e0b;--bad:#e5484d;--wa:#128c4a;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1624;--card:#18223a;--ink:#eaf0fb;--mut:#93a0bd;--line:#2a3652;--okbg:#14342b;--navy:#223a63}}
+:root[data-theme="dark"]{--bg:#0f1624;--card:#18223a;--ink:#eaf0fb;--mut:#93a0bd;--line:#2a3652;--okbg:#14342b;--navy:#223a63}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+h1,h2,h3{color:var(--ink)}
+.wrap{max-width:1180px;margin:0 auto;padding:16px 16px 60px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;font-size:13px;font-weight:600}
+.tb{display:flex;gap:6px}
+.lnk{border:0;background:none;color:var(--mut);font-weight:700;font-size:12px;padding:6px 10px;border-radius:99px;text-decoration:underline}
+.top{display:grid;grid-template-columns:1.9fr 1fr;gap:16px}
+.hero{background:var(--navy);color:#fff;border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:18px}
+.hero .row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.hero small{opacity:.7;font-size:11px}
+.hero h1{margin:6px 0 0;font-size:28px;line-height:1.15;max-width:15ch;color:#fff}
+.hbtns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:0;border-radius:999px;padding:10px 16px;font-weight:700;background:#fff;color:#16233b}
+.btn.p{background:var(--acc);color:#fff}.hbtns [data-act="novo"]{background:var(--acc);color:#fff;padding:12px 18px;box-shadow:0 3px 10px #102a6640}.hbtns [data-act="mor"]{border:1px solid #ffffff80;background:#fff;color:#16233b}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#b8c0d4;margin-left:4px}
+.dot.on{background:var(--ok)}
+.stats{display:flex;gap:10px;flex-wrap:wrap}
+.stat{background:rgba(255,255,255,.12);border-radius:12px;padding:10px 14px;min-width:110px}
+.stat b{display:block;font-size:20px}.stat span{font-size:11px;opacity:.8}
+.prog{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px;display:flex;flex-direction:column;justify-content:flex-end;gap:6px}
+.prog b{font-size:34px}.prog span{color:var(--mut);font-size:12px}
+.bar{height:6px;background:var(--line);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ok);transition:width .4s}
+.hint{color:var(--mut);font-size:12px}
+.wahint{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:#fff7e0;color:#7a5a00;border-radius:14px;padding:10px 14px;margin-top:12px;font-size:13px}
+.wahint .take{background:#fde9a8;color:#7a5a00}
+.cats{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 10px;margin-top:8px}
+.cat{flex:1 0 96px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 8px;text-align:center;font-size:12px;font-weight:600}
+.cat[aria-pressed=true]{border:2px solid var(--acc)}
+.cat em{display:block;font-style:normal;font-size:22px;margin-bottom:4px}
+.h{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin:18px 0 12px}
+.h h2{margin:0;font-size:22px}.h small{color:var(--mut)}
+.search{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:9px 16px;min-width:220px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:99px;padding:6px 12px;font-size:12px;font-weight:600}
+.chip[aria-pressed=true]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.cols3 h3{font-size:14px;margin:0 0 10px;display:flex;gap:8px;align-items:center}
+.n{background:#fdf0b8;color:#8a6500;border-radius:99px;padding:1px 8px;font-size:11px}
+.n.and{background:#ffe0b3;color:#8a4a00}
+.done .n{background:#c9f5df;color:#0b6b43}
+.task{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;gap:12px;margin-bottom:12px}
+.task.and{border-left:4px solid var(--warn)}
+.done .task{border-color:var(--ok);background:var(--okbg)}
+.chk{min-width:104px;min-height:40px;border-radius:12px;border:2px solid var(--acc);background:#eef3ff;flex:none;color:#1a47b8;font-size:12px;font-weight:800;line-height:1;padding:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px}.chk:focus-visible{outline:3px solid var(--acc);outline-offset:2px}.chk:hover{background:#dbe7ff}.done .chk{background:#eafaf2;border-color:var(--ok);color:#087443}
+.ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:20px;flex:none;background:var(--line)}
+.tx{flex:1;min-width:0}
+.tit{all:unset;display:block;font-weight:700;font-size:15px;cursor:pointer;color:var(--ink);overflow-wrap:anywhere}
+.tit:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+.done .tit{text-decoration:line-through}
+.tx p{margin:4px 0 8px;color:var(--mut);font-size:12px}
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px}
+.meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:11px;color:var(--mut)}
+.pill{border-radius:99px;padding:2px 8px;background:var(--line);font-weight:600;font-size:11px}
+.pill.me{background:#dbe7ff;color:#1a47b8}.pill.none{background:#fde8d4;color:#b45309}
+.pill.late{background:#fde0e0;color:var(--bad)}
+.take{border:0;background:#dbe7ff;color:#1a47b8;font-weight:700;border-radius:99px;padding:3px 10px;font-size:11px;text-decoration:none;display:inline-block}
+.take.go{background:#fff3cf;color:#8a6500}
+.empty{color:var(--mut);padding:18px;text-align:center;border:1px dashed var(--line);border-radius:16px}
+dialog{border:0;border-radius:20px;padding:22px;width:min(520px,94vw);max-height:90vh;overflow:auto;background:var(--card);color:var(--ink)}
+dialog::backdrop{background:rgba(10,15,30,.5)}
+dialog h2{margin:0 0 6px;font-size:20px}
+.dh{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px}
+.dh small{color:var(--mut)}
+.f label{display:block;font-size:12px;font-weight:600;margin:10px 0 4px}
+.f input:not([type=checkbox]):not([type=radio]),.f select,.f textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:9px;background:var(--bg)}
+.f .chkrow{display:flex;align-items:center;gap:8px;font-weight:500;font-size:13px;margin:6px 0}
+.f fieldset{border:1px solid var(--line);border-radius:14px;margin:12px 0 0;padding:6px 14px 12px}
+.f legend{font-size:12px;font-weight:700;padding:0 6px;color:var(--mut)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.seg{display:flex;gap:10px}
+.seg label{flex:1;margin:0;border:1px solid var(--line);border-radius:10px;padding:8px;display:flex;gap:6px;align-items:center;font-weight:500}
+.acts{display:flex;justify-content:flex-end;gap:8px;margin-top:16px;flex-wrap:wrap}
+.acts .btn{background:var(--line);color:var(--ink)}
+.acts .btn.p{background:var(--acc);color:#fff}
+.acts .btn.ok{background:var(--ok);color:#fff}
+.acts .btn.danger{background:#fde0e0;color:var(--bad)}
+.err{color:var(--bad);font-size:12px;font-weight:600;margin:8px 0 0;min-height:0}
+.okmsg{background:var(--okbg);color:#0b6b43;border-radius:12px;padding:8px 12px;font-size:12px;font-weight:600}
+.mut{color:var(--mut)}
+.st{border-radius:99px;padding:3px 10px;font-size:11px;font-weight:700;white-space:nowrap}
+.st.pendente{background:#fdf0b8;color:#8a6500}.st.andamento{background:#ffe0b3;color:#8a4a00}.st.concluida{background:#c9f5df;color:#0b6b43}
+dl.info{display:grid;grid-template-columns:110px 1fr;gap:6px 10px;font-size:13px;margin:12px 0}
+dl.info dt{color:var(--mut)}dl.info dd{margin:0}
+.ml{list-style:none;margin:10px 0;padding:0}
+.ml li{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+.av{width:36px;height:36px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:700;flex:none}
+.mi{flex:1;min-width:0}.mi small{display:block;color:var(--mut);font-size:11px;overflow-wrap:anywhere}
+.ab{color:var(--mut);white-space:nowrap}
+.inv{flex-direction:column;align-items:stretch!important;border:1px solid var(--line);border-radius:12px;padding:10px}
+.inv code,.code{font-family:ui-monospace,Menlo,monospace;font-weight:700;letter-spacing:.08em}
+.ia{display:flex;gap:6px;flex-wrap:wrap}
+.tabs{display:flex;gap:6px;margin:10px 0 6px;flex-wrap:wrap}
+.tabbtn{border:1px solid var(--line);background:var(--card);border-radius:99px;padding:7px 14px;font-weight:700;font-size:12px}
+.tabbtn[aria-pressed=true]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.steps{padding-left:20px;margin:10px 0;line-height:1.7;font-size:13px}
+.code{display:inline-block;background:var(--bg);border:1px dashed var(--mut);border-radius:10px;padding:6px 14px;font-size:20px;margin:6px 8px 6px 0}
+.linked{background:var(--okbg);border-radius:14px;padding:14px;margin:10px 0}
+.chat{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:10px;height:290px;overflow:auto;display:flex;flex-direction:column;gap:8px}
+.msg{max-width:88%;padding:8px 10px;border-radius:12px;background:var(--card);font-size:13px;white-space:pre-wrap;overflow-wrap:anywhere}
+.msg b{display:block;font-size:11px;opacity:.7}
+.msg small{display:block;text-align:right;font-size:10px;opacity:.6;margin-top:2px}
+.msg.sys{background:#dcf8c6;color:#111;align-self:flex-start}
+.msg.me{background:#e9e4ff;color:#111;align-self:flex-end}
+.msg .take{margin-top:6px}
+.chatf{display:flex;gap:8px;margin-top:8px}.chatf input{flex:1}
+.chatf .btn{background:var(--acc);color:#fff}
+.auth{min-height:100vh;display:grid;place-items:center;padding:20px 16px}
+.authcard{width:min(460px,100%);background:var(--card);border:1px solid var(--line);border-radius:22px;padding:26px}
+.authcard.wide{width:min(760px,100%)}
+.authcard h1{font-size:22px;margin:6px 0}
+.authcard h2{font-size:15px;margin:18px 0 8px}
+.logo{font-size:34px}
+.demo{margin-top:16px;padding-top:12px;border-top:1px solid var(--line)}
+.demo small{display:block;color:var(--mut);margin-bottom:6px}
+.casalist{list-style:none;margin:0;padding:0}
+.casalist li{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:8px}
+.casalist small{display:block;color:var(--mut)}
+.twocards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
+.twocards>div{border:1px solid var(--line);border-radius:16px;padding:6px 16px 14px}
+.convbox{margin-top:10px}
+#toast{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translate(-50%,140%);transition:transform .35s;background:var(--navy);color:#fff;border-radius:14px;padding:12px 16px;max-width:92vw;box-shadow:0 8px 24px rgba(0,0,0,.25);z-index:9999}
+#toast.on{transform:translate(-50%,0)}
+#toast.wa{background:var(--wa)}#toast.bad{background:var(--bad)}
+#toast small{display:block;opacity:.8;font-size:11px;margin-bottom:2px}
+@media(max-width:900px){.cols3{grid-template-columns:1fr}}
+@media(max-width:720px){.top,.twocards{grid-template-columns:1fr}.hero h1{font-size:24px}.g2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<dialog id="dTask" class="f"></dialog>
+<dialog id="dDet" class="f"></dialog>
+<dialog id="dDel" class="f"></dialog>
+<dialog id="dMor" class="f"></dialog>
+<dialog id="dWA" class="f"></dialog>
+<dialog id="dConf" class="f"></dialog>
+<div id="toast" role="status"><small id="toastH"></small><span id="toastT"></span></div>
+
+<script>
+"use strict";
+/* ============ Constantes e estado ============ */
+const KEY="homemaranha.v2",SKEY="homemaranha.sessao";
+const CATS=[["Todas","▦"],["Limpeza","🧴"],["Manutenção","🔧"],["Compras","🧺"],["Lavanderia","👕"],["Organização","📦"]];
+const PERS={diaria:"Diária",semanal:"Semanal",quinzenal:"Quinzenal",mensal:"Mensal",personalizada:"Personalizada"};
+const PRI={baixa:"Baixa",media:"Média",alta:"Alta"};
+const ESTADO={pendente:"Pendente",andamento:"Em andamento",concluida:"Concluída"};
+const MES=["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+const PREF0={nova:true,alter:true,concl:true,lemb:true,antec:3,limite:2,atraso:true,intervalo:12,dest:"resp",silOn:false,silDe:"22:00",silAte:"07:00",pausado:false};
+
+function load(){try{const r=localStorage.getItem(KEY);if(r){const d=JSON.parse(r);if(d&&Array.isArray(d.users)&&Array.isArray(d.casas))return d}}catch(e){}return {users:[],casas:[]}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){}}
+function loadSess(){try{return JSON.parse(sessionStorage.getItem(SKEY))||{}}catch(e){return {}}}
+function saveSess(){try{sessionStorage.setItem(SKEY,JSON.stringify(sess))}catch(e){}}
+
+let DB=load(),sess=loadSess();
+let cat="Todas",q="",flt="todas",authTab="in",waTab="vinculo",editId=null,detId=null,delId=null,convOk=null,confFn=null,tm,casasMsg="";
+let convHash=null;
+try{const m=location.hash.match(/convite=([A-Za-z0-9]+)/);if(m)convHash=m[1].toUpperCase()}catch(e){}
+
+/* ============ Utilitários ============ */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+const uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-3);
+const pad=n=>String(n).padStart(2,"0");
+const isoDate=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const today=()=>isoDate(new Date());
+function addDays(iso,n){const d=new Date(iso+"T12:00:00");d.setDate(d.getDate()+n);return isoDate(d)}
+function proxData(base,per,dias){if(per=="mensal"){const d=new Date(base+"T12:00:00");d.setMonth(d.getMonth()+1);return isoDate(d)}return addDays(base,per=="personalizada"?Math.max(1,Math.min(365,Number(dias)||7)):({diaria:1,semanal:7,quinzenal:14}[per]||7))}
+function proxima(t){let d=proxData(t.pd||today(),t.per,t.dias);while(d<today())d=proxData(d,t.per,t.dias);return d}
+const dueDate=t=>t.pd?new Date(t.pd+"T"+(t.ph||"23:59")+":00"):null;
+const atrasada=t=>t.s!="concluida"&&!!dueDate(t)&&dueDate(t)<new Date();
+function fmtPrazo(t){
+  if(!t.pd)return "Sem prazo";
+  const h=today();let dia;
+  if(t.pd==h)dia="Hoje";else if(t.pd==addDays(h,1))dia="Amanhã";else if(t.pd==addDays(h,-1))dia="Ontem";
+  else{const p=t.pd.split("-");dia=`${+p[2]} de ${MES[+p[1]-1]}`}
+  return t.ph?`${dia}, ${t.ph}`:dia;
+}
+const hhmm=ms=>new Date(ms).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
+const ico=c=>(CATS.find(x=>x[0]==c)||CATS[0])[1];
+const A32="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+const rnd=n=>Array.from({length:n},()=>A32[Math.floor(Math.random()*A32.length)]).join("");
+function codigoUnico(){let c;do{c=rnd(6)}while(DB.casas.some(x=>x.convites.some(v=>v.cod==c)));return c}
+async function hash(s){
+  s="hm:"+s;
+  try{if(window.crypto&&crypto.subtle&&window.TextEncoder){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,"0")).join("")}}catch(e){}
+  let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return "x"+h;
+}
+const me=()=>DB.users.find(u=>u.id==sess.uid);
+const casa=()=>DB.casas.find(c=>c.id==sess.cid&&c.membros.includes(sess.uid));
+const nm=id=>{const u=DB.users.find(x=>x.id==id);return u?u.nome:""};
+const tarefa=id=>{const c=casa();return c?c.tarefas.find(t=>t.id==id):null};
+const isOpen=id=>$("#"+id).open;
+function err(id,msg){const e=$("#"+id);if(e)e.textContent=msg;return false}
+function toast(msg,head,kind){
+  const t=$("#toast");$("#toastH").textContent=head||"";$("#toastT").textContent=msg;
+  t.className="on "+(kind||"");clearTimeout(tm);tm=setTimeout(()=>{t.className=""},3800);
+}
+function novaCasa(nome,admin){
+  return {id:uid(),nome,admin,membros:[admin],convites:[],tarefas:[],
+    wa:{on:false,grupo:"",desde:0,codigo:"CASA-"+rnd(4),prefs:Object.assign({},PREF0),chat:[]}};
+}
+
+/* ============ Avisos no WhatsApp (simulados) ============ */
+function emSilencio(p,now){
+  if(!p.silOn)return false;now=now||new Date();
+  const m=now.getHours()*60+now.getMinutes();
+  const f=x=>{const a=x.split(":");return +a[0]*60+ +a[1]};
+  const a=f(p.silDe),b=f(p.silAte);
+  return a<b?(m>=a&&m<b):(m>=a||m<b);
+}
+/* retorna "ok" (enviado), "bloq" (pausado/silêncio) ou "off" (sem vínculo ou tipo desativado) */
+function avisar(c,tipo,txt,tid,quiet){
+  const w=c.wa,p=w.prefs;
+  if(!w.on||!p[tipo])return "off";
+  if(p.pausado){if(!quiet)toast("Avisos pausados: nada foi enviado ao grupo.","WhatsApp","");return "bloq"}
+  if(emSilencio(p)){if(!quiet)toast("Horário de silêncio: o aviso não foi enviado ao grupo.","WhatsApp","");return "bloq"}
+  w.chat.push({de:"Casa",txt,tid:tid||null,t:Date.now(),sys:true});
+  if(w.chat.length>200)w.chat.splice(0,w.chat.length-200);
+  if(c.id==sess.cid&&!quiet)toast(txt,"Mensagem enviada ao grupo do WhatsApp da casa","wa");
+  return "ok";
+}
+function notificar(c,tipo,txt,tid,fallback){
+  if(avisar(c,tipo,txt,tid)=="off"&&fallback)toast(fallback,"Pronto","");
+}
+function tick(){
+  let n=0;const now=Date.now();
+  DB.casas.forEach(c=>{
+    const w=c.wa,p=w.prefs;if(!w.on)return;
+    c.tarefas.forEach(t=>{
+      if(t.s=="concluida"||!t.pd)return;
+      const dd=dueDate(t).getTime();
+      if(p.lemb&&now<dd&&(t.lemb||0)<p.limite){
+        const ant=p.antec*36e5,step=ant/p.limite;
+        if(now>=dd-ant){
+          const k=Math.min(p.limite,Math.floor((now-(dd-ant))/step)+1);
+          if(k>(t.lemb||0)){
+            const quem=t.r?"responsável: "+nm(t.r):"ainda sem responsável";
+            if(avisar(c,"lemb",`⏰ Lembrete: "${t.t}" vence ${fmtPrazo(t).toLowerCase()} (${quem}).`,t.id,true)=="ok"){t.lemb=k;n++}
+          }
+        }
+      }
+      if(p.atraso&&now>dd&&(!t.ult||now-t.ult>=p.intervalo*36e5)){
+        let fim;
+        if(p.dest=="todos")fim="Pessoal, alguém consegue ajudar?";
+        else if(t.r)fim=`${nm(t.r)}, consegue dar uma olhada?`;
+        else fim="Ainda sem responsável. Quem assume?";
+        if(avisar(c,"atraso",`🔔 "${t.t}" passou do prazo (${fmtPrazo(t)}). ${fim}`,t.id,true)=="ok"){t.ult=now;n++}
+      }
+    });
+  });
+  if(n){save();draw();refreshDlgs()}
+  return n;
+}
+
+/* ============ Telas: acesso e casa ============ */
+function viewAuth(){
+  const demo=DB.users.some(u=>u.email=="suzana@casa.com"),isIn=authTab=="in";
+  const formIn=`<form class="f" data-form="login" novalidate>
+    <label for="aE">E-mail</label><input id="aE" name="email" type="email" autocomplete="email">
+    <label for="aS">Senha</label><input id="aS" name="senha" type="password" autocomplete="current-password">
+    <p class="err" id="authErr" role="alert"></p>
+    <div class="acts"><button class="btn p">Entrar</button></div></form>`;
+  const formUp=`<form class="f" data-form="cadastro" novalidate>
+    <label for="aN">Nome</label><input id="aN" name="nome" autocomplete="name">
+    <label for="aE">E-mail</label><input id="aE" name="email" type="email" autocomplete="email">
+    <div class="g2"><div><label for="aS">Senha</label><input id="aS" name="senha" type="password" autocomplete="new-password"></div>
+    <div><label for="aS2">Confirmar senha</label><input id="aS2" name="senha2" type="password" autocomplete="new-password"></div></div>
+    <p class="err" id="authErr" role="alert"></p>
+    <div class="acts"><button class="btn p">Criar conta</button></div></form>`;
+  const demos=demo?`<div class="demo"><small>Contas de exemplo (senha 123456). Abra em duas abas para testar com dois moradores.</small><div class="chips">
+    ${[["Suzana","suzana@casa.com"],["João","joao@casa.com"],["Emanuel","emanuel@casa.com"],["Ana Carolina","ana@casa.com"]].map(x=>`<button class="chip" data-act="demo" data-e="${x[1]}">${x[0]}</button>`).join("")}</div></div>`
+    :`<div class="demo"><small>Quer só ver funcionando?</small><button class="chip" data-act="seed">Carregar casa de exemplo</button></div>`;
+  return `<div class="auth"><div class="authcard f"><div class="logo">🕷️</div><h1>Homem aranha, tudo eu nessa casa</h1>
+    <p class="mut">Divida as tarefas da casa e deixe o grupo do WhatsApp avisado.</p>
+    ${convHash?`<p class="okmsg">Você recebeu um convite para uma casa. Entre ou cadastre-se para aceitar.</p>`:""}
+    <div class="tabs"><button class="tabbtn" data-act="tab" data-v="in" aria-pressed="${isIn}">Acessar conta</button><button class="tabbtn" data-act="tab" data-v="up" aria-pressed="${!isIn}">Cadastrar-se</button></div>
+    ${isIn?formIn:formUp}${demos}
+    <p class="hint" style="margin-top:14px">Protótipo: contas, casas e tarefas ficam salvas neste navegador.</p></div></div>`;
+}
+function viewCasas(){
+  const u=me(),minhas=DB.casas.filter(c=>c.membros.includes(u.id));
+  const lista=minhas.length?`<ul class="casalist">${minhas.map(c=>`<li><div><b>${esc(c.nome)}</b><small>${c.membros.length} morador${c.membros.length>1?"es":""} · ${c.tarefas.filter(t=>t.s!="concluida").length} tarefas abertas</small></div><button class="btn p" data-act="entrar-casa" data-id="${c.id}">Abrir casa</button></li>`).join("")}</ul>`
+    :`<p class="empty">Você ainda não participa de nenhuma casa.</p>`;
+  const conv=convOk?`<div class="convbox"><p>Convite para <b>${esc(convOk.casa)}</b>, enviado por <b>${esc(convOk.de)}</b>.</p>
+      <div class="acts"><button class="btn" data-act="conv-no">Recusar</button><button class="btn p" data-act="conv-ok">Confirmar entrada</button></div></div>`
+    :`<form class="f" data-form="codConvite" novalidate><label for="cvC">Código do convite</label><input id="cvC" name="cod" placeholder="Ex.: K7M2QP" autocapitalize="characters" autocomplete="off">
+      <p class="err" id="convErr" role="alert"></p><div class="acts"><button class="btn p">Abrir convite</button></div></form>`;
+  return `<div class="auth"><div class="authcard wide f"><h1>Olá, ${esc(u.nome)}</h1>
+    <p class="mut">Escolha a casa em que quer entrar, crie uma nova ou aceite um convite.</p>
+    ${casasMsg?`<p class="err">${esc(casasMsg)}</p>`:""}
+    <h2>Suas casas</h2>${lista}
+    <div class="twocards"><div><h2>Criar residência</h2><form class="f" data-form="criarCasa" novalidate>
+      <label for="cnN">Nome da residência</label><input id="cnN" name="n" placeholder="Ex.: República da Savassi" autocomplete="off">
+      <p class="err" id="casaErr" role="alert"></p><div class="acts"><button class="btn p">Criar e convidar moradores</button></div></form></div>
+      <div><h2>Aceitar convite</h2>${conv}</div></div>
+    <div class="acts" style="justify-content:flex-start"><button class="lnk" data-act="sair">Sair da conta</button></div></div></div>`;
+}
+function mountMain(){
+  $("#root").innerHTML=`<div class="wrap">
+  <div class="topbar"><span id="who"></span><div class="tb"><button class="lnk" data-act="trocar">Trocar de casa</button><button class="lnk" data-act="sair">Sair</button></div></div>
+  <div class="top">
+    <section class="hero">
+      <div class="row"><div><small id="hsub">Visão de hoje</small><h1>Homem aranha, tudo eu nessa casa</h1></div>
+      <div class="hbtns"><button class="btn p" data-act="novo">+ Nova tarefa</button><button class="btn" data-act="mor">👥 Convidar moradores</button><button class="btn" data-act="wa">💬 WhatsApp <i id="waDot" class="dot"></i></button></div></div>
+      <div class="stats"><div class="stat"><b id="sAb">0</b><span>tarefas abertas</span></div><div class="stat"><b id="sAt">0</b><span>precisam de atenção</span></div><div class="stat"><b id="sMe">0</b><span>são suas</span></div></div>
+    </section>
+    <section class="prog" aria-live="polite"><b id="pct">0%</b><span>das tarefas concluídas</span><div class="bar"><i id="pb"></i></div></section>
+  </div>
+  <div class="wahint" id="waHint"><span>O grupo do WhatsApp ainda não está vinculado. Vincule para avisar a casa sobre tarefas e prazos.</span><button class="take" data-act="wa">Configurar WhatsApp</button></div>
+  <div class="h"><h2 style="font-size:14px">Categorias</h2><small id="cnt"></small></div>
+  <div class="cats" id="cats" role="group" aria-label="Categorias"></div>
+  <div class="h"><div><small>Responsabilidades</small><h2>O que precisa ser feito</h2></div>
+    <input class="search" id="q" type="search" placeholder="Buscar tarefa" aria-label="Buscar tarefa"></div>
+  <div class="chips" id="flt" role="group" aria-label="Filtro"></div>
+  <div class="cols3">
+    <section><h3>Pendentes <span class="n" id="nP">0</span></h3><div id="lP"></div></section>
+    <section><h3>Em andamento <span class="n and" id="nA">0</span></h3><div id="lA"></div></section>
+    <section class="done"><h3>Concluídas <span class="n" id="nD">0</span></h3><div id="lD"></div></section>
+  </div></div>`;
+  $("#q").value=q;
+  $("#q").oninput=e=>{q=e.target.value.toLowerCase();draw()};
+}
+function card(t){
+  const u=me();
+  const resp=t.r?`<span class="pill ${t.r==u.id?"me":""}">${t.r==u.id?"Você é responsável":esc(nm(t.r)||"ex-morador")}</span>`
+    :(t.s=="concluida"?`<span class="pill none">Sem responsável</span>`:`<span class="pill none">Sem responsável</span><button class="take" data-act="take" data-id="${t.id}">Assumir tarefa</button>`);
+  const ini=(t.s=="pendente"&&t.r==u.id)?`<button class="take go" data-act="iniciar" data-id="${t.id}">Iniciar</button>`:"";
+  const pills=[t.pri=="alta"?`<span class="pill late">ALTA</span>`:"",atrasada(t)?`<span class="pill late">ATRASADA</span>`:"",t.tipo=="recorrente"?`<span class="pill">🔁 ${PERS[t.per]||"Recorrente"}</span>`:""].join("");
+  const aberta=t.s!="concluida";
+  return `<article class="task ${t.s=="andamento"?"and":""}"><button class="chk" data-act="chk" data-id="${t.id}" aria-label="${aberta?"Concluir":"Reabrir"}: ${esc(t.t)}">${aberta?"✓ Concluir":"↻ Reabrir"}</button>
+  <div class="ic">${ico(t.c)}</div><div class="tx">${pills?`<div class="pills">${pills}</div>`:""}<button class="tit" data-act="det" data-id="${t.id}">${esc(t.t)}</button><p>${esc(t.d||"Sem detalhes.")}</p>
+  <div class="meta"><span>🕒 ${esc(fmtPrazo(t))}</span>${resp}${ini}</div></div></article>`;
+}
+function draw(){
+  const c=casa(),u=me();if(!c||!u||!$("#lP"))return;
+  $("#who").textContent=`🏠 ${c.nome}  ·  ${u.nome}`;
+  const ab=c.tarefas.filter(t=>t.s!="concluida");
+  $("#sAb").textContent=ab.length;
+  $("#sAt").textContent=ab.filter(t=>!t.r||t.pri=="alta"||atrasada(t)).length;
+  $("#sMe").textContent=ab.filter(t=>t.r==u.id).length;
+  const pct=c.tarefas.length?Math.round(c.tarefas.filter(t=>t.s=="concluida").length/c.tarefas.length*100):0;
+  $("#pct").textContent=pct+"%";$("#pb").style.width=pct+"%";
+  $("#cnt").textContent=c.tarefas.length+" tarefas";
+  $("#cats").innerHTML=CATS.map(x=>`<button class="cat" aria-pressed="${x[0]==cat}" data-act="cat" data-c="${x[0]}"><em>${x[1]}</em>${x[0]}</button>`).join("");
+  $("#flt").innerHTML=[["todas","Todas"],["minhas","Minhas"],["sem","Sem responsável"],["atrasadas","Atrasadas"]].map(x=>`<button class="chip" aria-pressed="${flt==x[0]}" data-act="flt" data-v="${x[0]}">${x[1]}</button>`).join("");
+  const okF=t=>flt=="todas"||(flt=="minhas"&&t.r==u.id)||(flt=="sem"&&!t.r)||(flt=="atrasadas"&&atrasada(t));
+  const v=c.tarefas.filter(t=>(cat=="Todas"||t.c==cat)&&(t.t.toLowerCase().includes(q)||(t.d||"").toLowerCase().includes(q))&&okF(t));
+  const key=t=>{const d=dueDate(t);return d?d.getTime():1e15};
+  const byP=(a,b)=>key(a)-key(b);
+  const P=v.filter(t=>t.s=="pendente").sort(byP),A=v.filter(t=>t.s=="andamento").sort(byP),D=v.filter(t=>t.s=="concluida").sort((a,b)=>(b.feitoEm||0)-(a.feitoEm||0));
+  $("#lP").innerHTML=P.map(card).join("")||'<div class="empty">Nada pendente aqui. Crie uma nova tarefa.</div>';
+  $("#lA").innerHTML=A.map(card).join("")||'<div class="empty">Nenhuma tarefa em andamento.</div>';
+  $("#lD").innerHTML=D.map(card).join("")||'<div class="empty">Nenhuma tarefa concluída ainda.</div>';
+  $("#nP").textContent=P.length;$("#nA").textContent=A.length;$("#nD").textContent=D.length;
+  $("#waHint").hidden=c.wa.on;$("#waDot").className="dot"+(c.wa.on?" on":"");
+}
+function go(){
+  document.querySelectorAll("dialog").forEach(d=>{if(d.open)d.close()});
+  if(!me()){sess={};saveSess();$("#root").innerHTML=viewAuth()}
+  else if(!casa()){$("#root").innerHTML=viewCasas()}
+  else{mountMain();draw()}
+  if(me())tick();
+}
+function refresh(){save();draw();refreshDlgs()}
+function refreshDlgs(){
+  if(isOpen("dDet"))drawDet();
+  if(isOpen("dMor"))drawMor();
+  if(isOpen("dWA")&&waTab!="avisos")drawWA();
+}
+
+/* ============ Acesso ============ */
+function afterLogin(){
+  casasMsg="";convOk=null;
+  if(convHash){
+    const v=buscarConvite(convHash);
+    if(v&&!DB.casas.find(c=>c.id==v.cid).membros.includes(sess.uid))convOk=v;
+    else casasMsg="O convite do link é inválido, já foi usado ou você já mora nessa casa.";
+    convHash=null;
+    try{history.replaceState(null,"",location.href.split("#")[0])}catch(e){}
+  }
+  go();
+}
+async function entrar(email,senha){
+  if(!email||!senha)return err("authErr","Informe e-mail e senha.");
+  const u=DB.users.find(x=>x.email==email),h=await hash(senha);
+  if(!u||u.h!==h)return err("authErr","E-mail ou senha incorretos.");
+  sess={uid:u.id,cid:null};saveSess();afterLogin();
+}
+async function cadastrar(f){
+  const nome=f.nome.value.trim(),email=f.email.value.trim().toLowerCase(),s1=f.senha.value,s2=f.senha2.value;
+  if(!nome||!email||!s1)return err("authErr","Preencha nome, e-mail e senha.");
+  if(!/^\S+@\S+\.\S+$/.test(email))return err("authErr","E-mail inválido.");
+  if(s1.length<6)return err("authErr","A senha precisa ter pelo menos 6 caracteres.");
+  if(s1!==s2)return err("authErr","As senhas não conferem.");
+  if(DB.users.some(u=>u.email==email))return err("authErr","Este e-mail já está cadastrado. Use a aba Entrar.");
+  const u={id:uid(),nome,email,h:await hash(s1)};
+  DB.users.push(u);save();sess={uid:u.id,cid:null};saveSess();afterLogin();toast("Conta criada com sucesso! Agora escolha uma residência ou crie uma nova.","Cadastro concluído","");
+}
+function buscarConvite(cod){
+  cod=String(cod).trim().toUpperCase();
+  for(const c of DB.casas){const v=c.convites.find(x=>x.cod==cod&&x.estado=="pendente");if(v)return {cid:c.id,cod,casa:c.nome,de:nm(v.de)||"um morador"}}
+  return null;
+}
+async function seed(){
+  const h=await hash("123456");
+  const mk=(n,e)=>({id:uid(),nome:n,email:e,h});
+  const S=mk("Suzana","suzana@casa.com"),J=mk("João","joao@casa.com"),E=mk("Emanuel","emanuel@casa.com"),A=mk("Ana Carolina","ana@casa.com");
+  DB.users.push(S,J,E,A);
+  const hoje=today(),T=(t,d,c,o)=>Object.assign({id:uid(),t,d,c,pri:"media",pd:"",ph:"",tipo:"eventual",per:null,r:"",s:"pendente",por:S.id,criada:Date.now()-864e5,lemb:0,ult:0,feitoEm:0},o);
+  const c=novaCasa("Casa da Suzana",S.id);
+  c.membros=[S.id,J.id,E.id,A.id];
+  c.tarefas=[
+    T("Retirar o lixo da cozinha","Separar o reciclável antes de levar ao contêiner.","Limpeza",{r:A.id,pd:hoje,ph:"23:00",tipo:"recorrente",per:"diaria"}),
+    T("Trocar a lâmpada da cozinha","Comprar uma LED de luz quente e trocar a que está piscando.","Manutenção",{pri:"alta",pd:addDays(hoje,1),por:J.id}),
+    T("Organizar a despensa","Agrupar por tipo e descartar o que venceu.","Organização",{r:E.id,pd:addDays(hoje,-1),ph:"18:00"}),
+    T("Comprar produtos de limpeza","Detergente, desinfetante e esponjas.","Compras",{pri:"alta",pd:addDays(hoje,1),ph:"17:00"}),
+    T("Lavar roupas de cama","Ciclo delicado e secar pela manhã.","Lavanderia",{r:S.id,s:"andamento",pd:addDays(hoje,2),tipo:"recorrente",per:"semanal"}),
+    T("Comprar leite e café","O leite acabou e o café está no fim.","Compras",{r:A.id,pd:addDays(hoje,1)}),
+    T("Lavar a louça do jantar","Deixar a pia livre e guardar o que estiver seco.","Limpeza",{r:J.id,s:"concluida",feitoEm:Date.now()-36e5,pd:hoje,ph:"20:00"})
+  ];
+  c.wa.on=true;c.wa.grupo="Grupo da casa";c.wa.desde=Date.now()-864e5;
+  c.wa.chat=[{de:"Casa",txt:'✅ Grupo vinculado à casa "Casa da Suzana". Vou avisar por aqui sobre as tarefas.',t:Date.now()-864e5,sys:true,tid:null},
+    {de:"Suzana",uid:S.id,txt:"Pessoal, quem consegue comprar os produtos de limpeza até amanhã?",t:Date.now()-72e5}];
+  DB.casas.push(c);save();authTab="in";go();
+}
+
+/* ============ Tarefas ============ */
+function openTask(id){
+  editId=id||null;const c=casa(),t=id?tarefa(id):null;
+  const ms=c.membros.map(m=>DB.users.find(x=>x.id==m)).filter(Boolean);
+  const rec=t&&t.tipo=="recorrente";
+  $("#dTask").innerHTML=`<form data-form="task" novalidate><h2>${t?"Editar tarefa":"Nova tarefa"}</h2>
+  <label for="fT">O que precisa ser feito? *</label><input id="fT" name="t" placeholder="Ex.: Trocar a lâmpada da sala" value="${esc(t?t.t:"")}">
+  <label for="fD">Detalhes</label><textarea id="fD" name="d" rows="2" placeholder="Opcional">${esc(t?t.d:"")}</textarea>
+  <div class="g2"><div><label for="fC">Categoria</label><select id="fC" name="c">${CATS.slice(1).map(x=>`<option ${t&&t.c==x[0]?"selected":""}>${x[0]}</option>`).join("")}</select></div>
+  <div><label for="fPri">Prioridade</label><select id="fPri" name="pri">${Object.keys(PRI).map(k=>`<option value="${k}" ${(t?t.pri:"media")==k?"selected":""}>${PRI[k]}</option>`).join("")}</select></div></div>
+  <div class="g2"><div><label for="fPd">Prazo (opcional)</label><input type="date" id="fPd" name="pd" value="${esc(t?t.pd:"")}"></div>
+  <div><label for="fPh">Horário (opcional)</label><input type="time" id="fPh" name="ph" value="${esc(t?t.ph:"")}"></div></div>
+  <label>Tipo *</label><div class="seg"><label><input type="radio" name="tipo" value="eventual" ${rec?"":"checked"}> Eventual</label><label><input type="radio" name="tipo" value="recorrente" ${rec?"checked":""}> Recorrente</label></div>
+  <div id="perBox" ${rec?"":"hidden"}><label for="fPer">Periodicidade</label><select id="fPer" name="per">${Object.keys(PERS).map(k=>`<option value="${k}" ${(t&&t.per?t.per:"semanal")==k?"selected":""}>${PERS[k]}</option>`).join("")}</select><div id="diasBox" ${t&&t.per=="personalizada"?"":"hidden"}><label for="fDias">Repetir a cada quantos dias?</label><input id="fDias" name="dias" type="number" min="1" max="365" value="${t&&t.dias?t.dias:7}" placeholder="Ex.: 10"><small class="mut">Escolha um intervalo entre 1 e 365 dias.</small></div></div>
+  <label for="fR">Responsável</label><select id="fR" name="r"><option value="">Sem responsável</option>${ms.map(m=>`<option value="${m.id}" ${t&&t.r==m.id?"selected":""}>${esc(m.nome)}${m.id==sess.uid?" (você)":""}</option>`).join("")}</select>
+  <p class="err" id="taskErr" role="alert"></p>
+  <div class="acts"><button type="button" class="btn" data-act="fechar" data-d="dTask">Cancelar</button><button class="btn p" type="submit">${t?"Salvar alterações":"Criar tarefa"}</button></div></form>`;
+  $("#dTask").showModal();
+}
+function salvarTask(f){
+  const c=casa(),u=me(),old=editId?tarefa(editId):null;
+  const t=f.t.value.trim();
+  if(!t)return err("taskErr","Informe o que precisa ser feito.");
+  const pd=f.pd.value,ph=f.ph.value;
+  if(ph&&!pd)return err("taskErr","Escolha a data do prazo para usar um horário.");
+  if(pd&&(!old||old.pd!=pd||old.ph!=ph)&&new Date(pd+"T"+(ph||"23:59")+":00")<new Date())return err("taskErr","O prazo não pode estar no passado.");
+  const tipo=f.tipo.value;
+  const per=tipo=="recorrente"?f.per.value:null,dias=per=="personalizada"?Number(f.dias.value):null;
+  if(per=="personalizada"&&(!Number.isInteger(dias)||dias<1||dias>365))return err("taskErr","Informe um intervalo entre 1 e 365 dias.");
+  const dados={t,d:f.d.value.trim(),c:f.c.value,pri:f.pri.value,pd,ph,tipo,per,dias,r:f.r.value};
+  $("#dTask").close();
+  if(old){
+    if(old.pd!=pd||old.ph!=ph){old.lemb=0;old.ult=0}
+    Object.assign(old,dados);
+    notificar(c,"alter",`✏️ ${u.nome} alterou: ${t} · prazo ${fmtPrazo(old).toLowerCase()}`,old.id,"Alterações salvas.");
+  }else{
+    const n=Object.assign({id:uid(),s:"pendente",por:u.id,criada:Date.now(),lemb:0,ult:0,feitoEm:0},dados);
+    c.tarefas.unshift(n);
+    notificar(c,"nova",`🆕 ${u.nome} criou: ${t} · prazo ${fmtPrazo(n).toLowerCase()} · ${n.r?"responsável "+nm(n.r):"precisa de alguém para assumir"}`,n.id,"Tarefa criada.");
+  }
+  editId=null;refresh();
+}
+function drawDet(){
+  const c=casa(),t=tarefa(detId);
+  if(!t){$("#dDet").close();return}
+  const aberta=t.s!="concluida";
+  $("#dDet").innerHTML=`<div class="dh"><div><small>${ico(t.c)} ${esc(t.c)}</small><h2>${esc(t.t)}</h2></div><span class="st ${t.s}">${ESTADO[t.s]}</span></div>
+  <p class="mut">${esc(t.d||"Sem detalhes.")}</p>
+  <dl class="info"><dt>Prazo</dt><dd>${esc(fmtPrazo(t))}${atrasada(t)?' <span class="pill late">ATRASADA</span>':""}</dd>
+  <dt>Prioridade</dt><dd>${PRI[t.pri]||"Média"}</dd>
+  <dt>Tipo</dt><dd>${t.tipo=="recorrente"?"Recorrente ("+(PERS[t.per]||"").toLowerCase()+")":"Eventual"}</dd>
+  <dt>Responsável</dt><dd>${t.r?esc(nm(t.r)||"ex-morador"):"Sem responsável"}</dd>
+  <dt>Criada por</dt><dd>${esc(nm(t.por)||"ex-morador")} em ${new Date(t.criada).toLocaleDateString("pt-BR")}</dd>
+  ${t.s=="concluida"&&t.feitoEm?`<dt>Concluída em</dt><dd>${new Date(t.feitoEm).toLocaleDateString("pt-BR")} às ${hhmm(t.feitoEm)}</dd>`:""}</dl>
+  <p class="err" id="detErr" role="alert"></p>
+  <div class="acts">
+  ${aberta&&!t.r?`<button class="btn p" data-act="take">Assumir tarefa</button>`:""}
+  ${aberta&&t.s=="pendente"?`<button class="btn" data-act="iniciar">Iniciar</button>`:""}
+  ${aberta?`<button class="btn" data-act="delegar">Delegar morador</button><button class="btn ok" data-act="concluir">Concluir</button>`:`<button class="btn" data-act="reabrir">Reabrir</button>`}
+  <button class="btn" data-act="edit">Editar</button><button class="btn danger" data-act="cancelar-t">Cancelar tarefa</button>
+  <button class="btn" data-act="fechar" data-d="dDet">Voltar</button></div>`;
+}
+function abrirDet(id){detId=id;drawDet();if(!isOpen("dDet"))$("#dDet").showModal()}
+function assumir(id){
+  const c=casa(),u=me(),t=tarefa(id);if(!t||t.s=="concluida")return;
+  if(t.r&&t.r!=u.id){
+    const m=`Esta tarefa já foi atribuída a ${nm(t.r)||"outro morador"}.`;
+    if(isOpen("dDet"))err("detErr",m);else toast(m,"Conflito","bad");
+    refresh();return;
+  }
+  if(t.r==u.id)return;
+  t.r=u.id;
+  notificar(c,"alter",`🙋 ${u.nome} assumiu: ${t.t}`,t.id,"Você assumiu a tarefa.");refresh();
+}
+function iniciar(id){
+  const c=casa(),u=me(),t=tarefa(id);if(!t||t.s!="pendente")return;
+  if(!t.r)t.r=u.id;
+  t.s="andamento";
+  notificar(c,"alter",`🔧 ${nm(t.r)} começou: ${t.t}`,t.id,"Tarefa em andamento.");refresh();
+}
+function concluirTarefa(id){
+  const c=casa(),t=tarefa(id);if(!t||t.s=="concluida")return;
+  t.s="concluida";t.feitoEm=Date.now();if(!t.r)t.r=sess.uid;
+  let extra="";
+  if(t.tipo=="recorrente"&&t.per){
+    const n=Object.assign({},t,{id:uid(),s:"pendente",pd:proxima(t),lemb:0,ult:0,feitoEm:0,criada:Date.now()});
+    c.tarefas.unshift(n);extra=` 🔁 Próxima ocorrência: ${fmtPrazo(n).toLowerCase()}.`;
+  }
+  notificar(c,"concl",`✅ ${nm(t.r)} concluiu: ${t.t}.${extra}`,t.id,"Tarefa concluída."+extra);
+  refresh();
+}
+function reabrir(id){
+  const c=casa(),u=me(),t=tarefa(id);if(!t||t.s!="concluida")return;
+  t.s="pendente";t.feitoEm=0;t.lemb=0;t.ult=0;
+  notificar(c,"alter",`↩️ ${u.nome} reabriu: ${t.t}`,t.id,"Tarefa reaberta.");refresh();
+}
+function confirmar(tit,txt,lbl,fn,danger){
+  confFn=fn;
+  $("#dConf").innerHTML=`<h2>${esc(tit)}</h2><p class="mut">${esc(txt)}</p><div class="acts"><button class="btn" data-act="conf-nao">Voltar</button><button class="btn ${danger?"danger":"p"}" data-act="conf-sim">${esc(lbl)}</button></div>`;
+  $("#dConf").showModal();
+}
+function openDel(id){
+  delId=id;const c=casa(),t=tarefa(id);if(!t)return;
+  const ms=c.membros.map(m=>DB.users.find(x=>x.id==m)).filter(Boolean);
+  $("#dDel").innerHTML=`<form data-form="del" novalidate><h2>Delegar tarefa</h2><p class="mut">${esc(t.t)}</p>
+  ${ms.map(m=>`<label class="chkrow"><input type="radio" name="m" value="${m.id}" ${t.r==m.id?"checked":""}> ${esc(m.nome)}${m.id==sess.uid?" (você)":""}</label>`).join("")}
+  <p class="err" id="delErr" role="alert"></p>
+  <div class="acts"><button type="button" class="btn" data-act="fechar" data-d="dDel">Cancelar</button><button class="btn p">Confirmar morador</button></div></form>`;
+  $("#dDel").showModal();
+}
+
+/* ============ Moradores e convites ============ */
+function linkConvite(cod){let b="";try{b=location.href.split("#")[0]}catch(e){}return b+"#convite="+cod}
+function drawMor(){
+  const c=casa(),u=me(),adm=c.admin==u.id;
+  const rows=c.membros.map(id=>{
+    const m=DB.users.find(x=>x.id==id);if(!m)return "";
+    const ab=c.tarefas.filter(t=>t.r==id&&t.s!="concluida").length,self=id==u.id;
+    return `<li><div class="av">${esc(m.nome.charAt(0).toUpperCase())}</div><div class="mi">${self?`<input id="meuNome" value="${esc(m.nome)}" aria-label="Seu nome">`:`<b>${esc(m.nome)}</b>`}<small>${esc(m.email)}${id==c.admin?" · Administrador":""}${self?" · Você":""}</small></div><small class="ab">${ab} abertas</small>${adm&&!self?`<button class="take" data-act="rm" data-id="${id}">Remover</button>`:""}</li>`;
+  }).join("");
+  const pend=c.convites.filter(v=>v.estado=="pendente").map(v=>{
+    const fone=!/@/.test(v.contato);
+    const txt=`Oi! ${nm(v.de)||"Um morador"} convidou você para a casa "${c.nome}" no Homem aranha, tudo eu nessa casa. Código do convite: ${v.cod}. Link: ${linkConvite(v.cod)}`;
+    let href;
+    if(fone){let d=v.contato.replace(/\D/g,"");if(d.length<=11)d="55"+d;href="https://wa.me/"+d+"?text="+encodeURIComponent(txt)}
+    else href="mailto:"+encodeURIComponent(v.contato)+"?subject="+encodeURIComponent("Convite para a casa "+c.nome)+"&body="+encodeURIComponent(txt);
+    return `<li class="inv"><div><b>${esc(v.contato)}</b><small>Código <code>${v.cod}</code></small></div><div class="ia"><a class="take" href="${esc(href)}" target="_blank" rel="noopener">${fone?"Enviar pelo WhatsApp":"Enviar por e-mail"}</a><button class="take" data-act="copiar" data-cod="${v.cod}">Copiar link</button><button class="take" data-act="revogar" data-cod="${v.cod}">Revogar</button></div></li>`;
+  }).join("");
+  $("#dMor").innerHTML=`<div class="dh"><div><small>${esc(c.nome)}</small><h2>Moradores e convites</h2></div><button class="btn" style="background:var(--line);color:var(--ink)" data-act="fechar" data-d="dMor">Fechar</button></div>
+  <ul class="ml">${rows}</ul>
+  <form data-form="convite" novalidate><label for="invC">Enviar convite para um morador (e-mail ou telefone com DDD)</label>
+  <div class="chatf"><input id="invC" name="ct" placeholder="nome@email.com ou (31) 99999-0000" autocomplete="off"><button class="btn p">Criar convite</button></div>
+  <small class="mut">Depois de criar, você poderá enviar pelo WhatsApp ou e-mail, ou copiar o link para compartilhar.</small>
+  <p class="err" id="invErr" role="alert"></p></form>
+  ${pend?`<h3 style="font-size:13px;margin:14px 0 6px">Convites pendentes</h3><ul class="ml">${pend}</ul>`:""}
+  ${adm?"":`<div class="acts" style="justify-content:flex-start"><button class="btn danger" data-act="sairCasa">Sair desta casa</button></div>`}`;
+}
+function drawWA(){
+  const c=casa(),w=c.wa,p=w.prefs;
+  const prev=$("#chIn")?$("#chIn").value:"";
+  const tab=(k,l)=>`<button class="tabbtn" aria-pressed="${waTab==k}" data-act="waTab" data-v="${k}">${l}</button>`;
+  let body="";
+  if(waTab=="vinculo"){
+    body=w.on?`<div class="linked"><b>✅ Grupo vinculado: ${esc(w.grupo)}</b><p class="mut" style="margin:4px 0 0">Desde ${new Date(w.desde).toLocaleDateString("pt-BR")}. As mudanças nas tarefas são avisadas neste grupo, conforme as preferências.</p></div>
+      <div class="acts" style="justify-content:flex-start"><button class="btn" data-act="waTeste">Enviar aviso de teste</button><button class="btn danger" data-act="waDesv">Desvincular grupo</button></div>`
+    :`<ol class="steps"><li>Adicione o número da casa ao grupo do WhatsApp: <b>+55 31 90000-0000</b> <small class="mut">(número de demonstração)</small></li>
+      <li>Envie este código no grupo:<br><span class="code">${esc(w.codigo)}</span><button class="take" data-act="waGerar">Gerar novo código</button></li>
+      <li>Informe o nome do grupo e confirme.</li></ol>
+      <form data-form="vincular" novalidate><label for="gNome">Nome do grupo</label><input id="gNome" name="g" placeholder="Ex.: Casa da família" autocomplete="off">
+      <p class="err" id="vincErr" role="alert"></p>
+      <div class="acts"><button type="button" class="btn" data-act="fechar" data-d="dWA">Desistir</button><button class="btn p">Já enviei o código</button></div></form>
+      <p class="hint">Neste protótipo o grupo é simulado. Envie o código pela aba Grupo (simulado).</p>`;
+  }else if(waTab=="avisos"){
+    const ck=(n,l)=>`<label class="chkrow"><input type="checkbox" name="${n}" ${p[n]?"checked":""}> ${l}</label>`;
+    body=`<form data-form="prefs" novalidate>
+    <fieldset><legend>Eventos comunicados no grupo</legend>${ck("nova","Nova tarefa")}${ck("alter","Alteração ou cancelamento")}${ck("concl","Tarefa concluída")}</fieldset>
+    <fieldset><legend>Lembretes de prazo</legend>${ck("lemb","Enviar lembretes antes do prazo")}
+      <div class="g2"><div><label for="pA">Antecedência (horas)</label><input id="pA" type="number" name="antec" min="1" max="72" value="${p.antec}"></div>
+      <div><label for="pL">Limite por tarefa (1 a 5)</label><input id="pL" type="number" name="limite" min="1" max="5" value="${p.limite}"></div></div></fieldset>
+    <fieldset><legend>Avisos de atraso</legend>${ck("atraso","Avisar quando uma tarefa passar do prazo")}
+      <div class="g2"><div><label for="pI">Intervalo entre avisos (horas)</label><input id="pI" type="number" name="intervalo" min="1" max="72" value="${p.intervalo}"></div>
+      <div><label for="pD">Destinatário</label><select id="pD" name="dest"><option value="resp" ${p.dest=="resp"?"selected":""}>Responsável da tarefa</option><option value="todos" ${p.dest=="todos"?"selected":""}>Todos do grupo</option></select></div></div></fieldset>
+    <fieldset><legend>Silêncio e pausa</legend>${ck("silOn","Não enviar avisos neste horário")}
+      <div class="g2"><div><label for="pSd">Das</label><input id="pSd" type="time" name="silDe" value="${p.silDe}"></div><div><label for="pSa">Até</label><input id="pSa" type="time" name="silAte" value="${p.silAte}"></div></div>
+      ${ck("pausado","Pausar todos os avisos")}</fieldset>
+    <p class="err" id="prefErr" role="alert"></p>
+    <div class="acts"><button type="button" class="btn" data-act="verifLemb">Verificar lembretes agora</button><button class="btn p">Salvar preferências</button></div></form>`;
+  }else{
+    const msgs=w.chat.map(m=>{
+      const mine=!m.sys&&m.uid==sess.uid;
+      return `<div class="msg ${m.sys?"sys":(mine?"me":"")}"><b>${esc(m.de)}</b>${esc(m.txt)}${m.tid?`<br><button class="take" data-act="abrir" data-id="${m.tid}">Abrir tarefa no sistema</button>`:""}<small>${hhmm(m.t)}</small></div>`;
+    }).join("");
+    body=`<p class="hint">Simulação do grupo de WhatsApp da casa. Com a integração real, estas mensagens chegariam no grupo de verdade.</p>
+    <div class="chat" id="chat">${msgs||'<div class="empty">Nenhuma mensagem ainda. Envie o código de vínculo aqui para vincular o grupo.</div>'}</div>
+    <form data-form="chat" class="chatf" novalidate><input id="chIn" name="m" placeholder="Escreva no grupo (simulado)" autocomplete="off"><button class="btn">Enviar</button></form>`;
+  }
+  $("#dWA").innerHTML=`<div class="dh"><div><small>${esc(c.nome)}</small><h2>WhatsApp da casa</h2></div><button class="btn" style="background:var(--line);color:var(--ink)" data-act="fechar" data-d="dWA">Fechar</button></div>
+  <div class="tabs">${tab("vinculo","Vínculo")}${tab("avisos","Avisos")}${tab("chat","Grupo (simulado)")}</div>${body}`;
+  const ch=$("#chat");if(ch)ch.scrollTop=ch.scrollHeight;
+  if(prev&&$("#chIn"))$("#chIn").value=prev;
+}
+
+/* ============ Ações (cliques) ============ */
+const ACT={
+  tab:b=>{authTab=b.dataset.v;go()},
+  seed:()=>seed(),
+  demo:b=>entrar(b.dataset.e,"123456"),
+  sair:()=>{sess={};saveSess();convOk=null;casasMsg="";go()},
+  trocar:()=>{sess.cid=null;saveSess();casasMsg="";go()},
+  "entrar-casa":(b,id)=>{sess.cid=id;saveSess();go()},
+  "conv-no":()=>{convOk=null;go()},
+  "conv-ok":()=>{
+    const u=me(),v=convOk&&buscarConvite(convOk.cod);
+    if(!v){convOk=null;casasMsg="Esse convite não está mais disponível.";go();return}
+    const c=DB.casas.find(x=>x.id==v.cid);
+    if(!c.membros.includes(u.id))c.membros.push(u.id);
+    const cv=c.convites.find(x=>x.cod==v.cod);cv.estado="aceito";cv.por=u.id;
+    convOk=null;casasMsg="";sess.cid=c.id;saveSess();save();go();
+    toast(`Você agora mora em ${c.nome}.`,"Bem-vindo","");
+  },
+  cat:b=>{cat=b.dataset.c;draw()},
+  flt:b=>{flt=b.dataset.v;draw()},
+  novo:()=>openTask(null),
+  det:(b,id)=>abrirDet(id),
+  chk:(b,id)=>{const t=tarefa(id);if(!t)return;if(t.s=="concluida")reabrir(id);else ACT.concluir(b,id)},
+  take:(b,id)=>assumir(id||detId),
+  iniciar:(b,id)=>iniciar(id||detId),
+  concluir:(b,id)=>{
+    const t=tarefa(id||detId);if(!t)return;
+    confirmar("Concluir tarefa?",`"${t.t}" será marcada como concluída e a casa será avisada.`,"Concluir",()=>concluirTarefa(t.id));
+  },
+  reabrir:()=>reabrir(detId),
+  edit:()=>{const id=detId;$("#dDet").close();openTask(id)},
+  delegar:()=>openDel(detId),
+  "cancelar-t":()=>{
+    const t=tarefa(detId);if(!t)return;
+    confirmar("Cancelar tarefa?",`"${t.t}" será removida e a casa será avisada.`,"Cancelar tarefa",()=>{
+      const c=casa(),u=me(),i=c.tarefas.findIndex(x=>x.id==t.id);if(i<0)return;
+      c.tarefas.splice(i,1);$("#dDet").close();detId=null;
+      notificar(c,"alter",`🗑️ ${u.nome} cancelou: ${t.t}`,null,"Tarefa cancelada.");refresh();
+    },true);
+  },
+  fechar:b=>{const d=$("#"+b.dataset.d);if(d.open)d.close()},
+  "conf-sim":()=>{const f=confFn;confFn=null;$("#dConf").close();if(f)f()},
+  "conf-nao":()=>{confFn=null;$("#dConf").close()},
+  mor:()=>{drawMor();$("#dMor").showModal()},
+  copiar:b=>{
+    const l=linkConvite(b.dataset.cod);
+    try{navigator.clipboard.writeText(l).then(()=>toast("Link do convite copiado.","Convite",""),()=>toast("Código do convite: "+b.dataset.cod,"Convite",""))}
+    catch(e){toast("Código do convite: "+b.dataset.cod,"Convite","")}
+  },
+  revogar:b=>{const c=casa(),v=c.convites.find(x=>x.cod==b.dataset.cod);if(v){v.estado="revogado";save();drawMor();toast("Convite revogado.","Convite","")}},
+  rm:(b,id)=>{
+    const c=casa();if(c.admin!=me().id)return;
+    confirmar("Remover morador?",`${nm(id)} deixa a casa e as tarefas dele ficam sem responsável.`,"Remover",()=>{
+      c.membros=c.membros.filter(x=>x!=id);
+      c.tarefas.forEach(t=>{if(t.r==id)t.r=""});
+      refresh();toast("Morador removido.","Moradores","");
+    },true);
+  },
+  sairCasa:()=>{
+    const c=casa(),u=me();
+    confirmar("Sair desta casa?","Você deixa a casa e as tarefas que estavam com você ficam sem responsável.","Sair",()=>{
+      c.membros=c.membros.filter(x=>x!=u.id);
+      c.tarefas.forEach(t=>{if(t.r==u.id)t.r=""});
+      sess.cid=null;saveSess();save();go();
+    },true);
+  },
+  wa:()=>{waTab=casa().wa.on?"avisos":"vinculo";drawWA();$("#dWA").showModal()},
+  waTab:b=>{waTab=b.dataset.v;drawWA()},
+  waGerar:()=>{casa().wa.codigo="CASA-"+rnd(4);save();drawWA()},
+  waTeste:()=>{
+    const c=casa();c.wa.chat.push({de:"Casa",txt:`🔔 Aviso de teste enviado por ${me().nome}.`,t:Date.now(),sys:true,tid:null});
+    save();toast("Aviso de teste enviado ao grupo.","WhatsApp","wa");drawWA();
+  },
+  waDesv:()=>{
+    confirmar("Desvincular grupo?","Os avisos deixam de ser enviados ao grupo. Você pode vincular de novo depois.","Desvincular",()=>{
+      const c=casa(),w=c.wa;
+      w.chat.push({de:"Casa",txt:"👋 Grupo desvinculado. Não vou mais enviar avisos por aqui.",t:Date.now(),sys:true,tid:null});
+      w.on=false;w.grupo="";w.desde=0;w.codigo="CASA-"+rnd(4);
+      waTab="vinculo";refresh();toast("Grupo desvinculado. Avisos interrompidos.","WhatsApp","");
+    },true);
+  },
+  verifLemb:()=>{
+    const n=tick();
+    toast(n?`${n} aviso${n>1?"s":""} enviado${n>1?"s":""} ao grupo.`:"Nenhum lembrete ou aviso de atraso para enviar agora.","WhatsApp",n?"wa":"");
+    if(isOpen("dWA")&&waTab!="avisos")drawWA();
+  },
+  abrir:(b,id)=>{
+    if(!tarefa(id)){toast("Essa tarefa não existe mais.","Aviso","bad");return}
+    $("#dWA").close();abrirDet(id);
+  }
+};
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-act]");if(!b)return;
+  const f=ACT[b.dataset.act];if(f)f(b,b.dataset.id);
+});
+
+/* ============ Formulários ============ */
+const FORM={
+  login:f=>entrar(f.email.value.trim().toLowerCase(),f.senha.value),
+  cadastro:f=>cadastrar(f),
+  criarCasa:f=>{
+    const n=f.n.value.trim();
+    if(!n)return err("casaErr","Informe o nome da residência.");
+    const c=novaCasa(n,sess.uid);DB.casas.push(c);save();
+    sess.cid=c.id;saveSess();casasMsg="";go();
+    toast("Residência criada. Convide os moradores.","Casa","");
+    drawMor();$("#dMor").showModal();
+  },
+  codConvite:f=>{
+    const cod=f.cod.value.trim();
+    if(!cod)return err("convErr","Informe o código do convite.");
+    const v=buscarConvite(cod);
+    if(!v)return err("convErr","Convite inválido, expirado ou já utilizado.");
+    if(DB.casas.find(c=>c.id==v.cid).membros.includes(sess.uid))return err("convErr","Você já mora nesta casa.");
+    convOk=v;casasMsg="";go();
+  },
+  task:f=>salvarTask(f),
+  del:f=>{
+    const c=casa(),u=me(),t=tarefa(delId);if(!t)return;
+    const m=f.m.value;
+    if(!m)return err("delErr","Escolha um morador.");
+    $("#dDel").close();
+    if(t.r!=m){
+      t.r=m;
+      notificar(c,"alter",m==u.id?`🙋 ${u.nome} assumiu: ${t.t}`:`📌 ${u.nome} indicou ${nm(m)} para: ${t.t}`,t.id,"Responsável atualizado.");
+    }
+    refresh();
+  },
+  convite:f=>{
+    const c=casa(),u=me(),ct=f.ct.value.trim();
+    if(!ct)return err("invErr","Informe o e-mail ou o telefone do morador.");
+    const email=/^\S+@\S+\.\S+$/.test(ct),fone=/^[\d\s()+-]{8,}$/.test(ct)&&ct.replace(/\D/g,"").length>=10;
+    if(!email&&!fone)return err("invErr","Contato inválido. Use um e-mail ou um telefone com DDD.");
+    if(email&&c.membros.some(id=>{const m=DB.users.find(x=>x.id==id);return m&&m.email==ct.toLowerCase()}))return err("invErr","Essa pessoa já mora na casa.");
+    if(c.convites.some(v=>v.estado=="pendente"&&v.contato.toLowerCase()==ct.toLowerCase()))return err("invErr","Já existe um convite pendente para este contato.");
+    c.convites.push({cod:codigoUnico(),contato:ct,de:u.id,estado:"pendente",em:Date.now()});
+    save();drawMor();toast("Convite criado! Use Enviar pelo WhatsApp/e-mail ou Copiar link na lista de convites pendentes.","Convite pronto","");
+  },
+  vincular:f=>{
+    const c=casa(),w=c.wa;
+    const chegou=w.chat.some(m=>!m.sys&&String(m.txt).toUpperCase().includes(w.codigo));
+    if(!chegou)return err("vincErr","O código ainda não chegou ao grupo. Confira se você o enviou no grupo certo e tente de novo.");
+    w.on=true;w.grupo=f.g.value.trim()||"Grupo da casa";w.desde=Date.now();
+    w.chat.push({de:"Casa",txt:`✅ Grupo vinculado à casa "${c.nome}". Vou avisar por aqui sobre as tarefas.`,t:Date.now(),sys:true,tid:null});
+    waTab="avisos";refresh();toast("Grupo vinculado. Ajuste as preferências de aviso.","WhatsApp","wa");
+  },
+  prefs:f=>{
+    const p=casa().wa.prefs,bad=[];
+    const antec=+f.antec.value,limite=+f.limite.value,inter=+f.intervalo.value;
+    if(!Number.isInteger(antec)||antec<1||antec>72)bad.push("antecedência (1 a 72 horas)");
+    if(!Number.isInteger(limite)||limite<1||limite>5)bad.push("limite de lembretes (1 a 5)");
+    if(!Number.isInteger(inter)||inter<1||inter>72)bad.push("intervalo de atraso (1 a 72 horas)");
+    if(f.silOn.checked&&(!f.silDe.value||!f.silAte.value||f.silDe.value==f.silAte.value))bad.push("horário de silêncio (início e fim diferentes)");
+    if(bad.length)return err("prefErr","Valores inválidos: "+bad.join("; ")+".");
+    Object.assign(p,{nova:f.nova.checked,alter:f.alter.checked,concl:f.concl.checked,lemb:f.lemb.checked,antec,limite,atraso:f.atraso.checked,intervalo:inter,dest:f.dest.value,silOn:f.silOn.checked,silDe:f.silDe.value||p.silDe,silAte:f.silAte.value||p.silAte,pausado:f.pausado.checked});
+    save();toast("Preferências de aviso salvas.","WhatsApp","");
+  },
+  chat:f=>{
+    const txt=f.m.value.trim();if(!txt)return;
+    casa().wa.chat.push({de:me().nome,uid:sess.uid,txt,t:Date.now()});
+    save();drawWA();const i=$("#chIn");if(i)i.focus();
+  }
+};
+document.addEventListener("submit",e=>{
+  const f=e.target.closest("form[data-form]");if(!f)return;
+  e.preventDefault();
+  f.querySelectorAll(".err").forEach(x=>{x.textContent=""});
+  const h=FORM[f.dataset.form];if(h)h(f);
+});
+document.addEventListener("change",e=>{
+  const t=e.target;
+  if(t.name=="tipo"&&$("#perBox"))$("#perBox").hidden=t.value!="recorrente";
+  if(t.id=="fPer"&&$("#diasBox"))$("#diasBox").hidden=t.value!="personalizada";
+  if(t.id=="meuNome"){
+    const n=t.value.trim(),u=me();
+    if(!n){t.value=u.nome;return}
+    u.nome=n;save();draw();toast("Nome atualizado.","Moradores","");
+  }
+});
+window.addEventListener("storage",e=>{
+  if(e.key!==KEY)return;
+  DB=load();
+  if(!me()){sess={};saveSess();go();return}
+  if(sess.cid&&!casa()){sess.cid=null;saveSess();go();return}
+  draw();refreshDlgs();
+});
+
+/* ============ Início ============ */
+if(!me())sess={};
+go();
+if(me()&&convHash)afterLogin();
+tick();
+setInterval(tick,30000);
+</script>
+</body>
+</html>
